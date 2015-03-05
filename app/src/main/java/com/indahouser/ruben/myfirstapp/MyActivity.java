@@ -3,14 +3,18 @@ package com.indahouser.ruben.myfirstapp;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.support.v4.view.MotionEventCompat;
 
 
 public class MyActivity extends ActionBarActivity {
     public final static String EXTRA_MESSAGE = "com.indahouser.ruben.myfirstapp.MESSAGE";
+    public final static String DEBUG_TAG = "MyApp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +45,37 @@ public class MyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendMessage(View view){
+    public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = MotionEventCompat.getActionMasked(event);
+
+        switch (action) {
+            case (MotionEvent.ACTION_DOWN):
+                Log.d(DEBUG_TAG, "Action was DOWN");
+                return true;
+            case (MotionEvent.ACTION_MOVE):
+                Log.d(DEBUG_TAG, "Action was MOVE");
+                return true;
+            case (MotionEvent.ACTION_UP):
+                Log.d(DEBUG_TAG, "Action was UP");
+                return true;
+            case (MotionEvent.ACTION_CANCEL):
+                Log.d(DEBUG_TAG, "Action was CANCEL");
+                return true;
+            case (MotionEvent.ACTION_OUTSIDE):
+                Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+                        "of current screen element");
+                return true;
+            default:
+                return super.onTouchEvent(event);
+        }
     }
 }
