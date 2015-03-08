@@ -10,11 +10,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.support.v4.view.MotionEventCompat;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class MyActivity extends ActionBarActivity {
     public final static String EXTRA_MESSAGE = "com.indahouser.ruben.myfirstapp.MESSAGE";
     public final static String DEBUG_TAG = "MyApp";
+    private int numberOfTouches = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,10 @@ public class MyActivity extends ActionBarActivity {
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
                 Log.d(DEBUG_TAG, "Action was DOWN");
+                this.numberOfTouches+=1;
+                Log.d(DEBUG_TAG, String.valueOf(numberOfTouches));
+                TextView counter = (TextView) findViewById(R.id.textView_counter);
+                counter.setText(String.valueOf(numberOfTouches));
                 return true;
             case (MotionEvent.ACTION_MOVE):
                 Log.d(DEBUG_TAG, "Action was MOVE");
