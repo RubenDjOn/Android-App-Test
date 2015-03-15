@@ -1,6 +1,10 @@
 package com.indahouser.ruben.myfirstapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +17,8 @@ import android.support.v4.view.MotionEventCompat;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.net.URI;
 
 
 public class MyActivity extends ActionBarActivity {
@@ -55,6 +61,28 @@ public class MyActivity extends ActionBarActivity {
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+
+    public void callNumber(View view){
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:654249140"));
+        startActivity(intent);
+    }
+
+    public void showContacts(View view) {
+        ContentResolver cr = getContentResolver();
+        Cursor cu = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        StringBuffer output = new StringBuffer();
+
+
+        if (cu.getCount() > 0) {
+            while (cu.moveToNext()) {
+                String contactName = cu.getString(cu.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                output.append("\n First Name:" + contactName);
+                Log.d(DEBUG_TAG, "test");
+            }
+        }
+        TextView textViewAgenda = (TextView) findViewById(R.id.textViewAgenda);
+        textViewAgenda.setText(output);
     }
 
     @Override
